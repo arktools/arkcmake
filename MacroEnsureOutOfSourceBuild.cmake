@@ -8,10 +8,12 @@
 
 macro (MACRO_ENSURE_OUT_OF_SOURCE_BUILD _errorMessage)
 
-   string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" _insource)
-   if (_insource)
-     message(SEND_ERROR "${_errorMessage}")
-     message(FATAL_ERROR "Remove the file CMakeCache.txt in ${CMAKE_SOURCE_DIR} first.")
-   endif (_insource)
+    string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" _insource)
+    if (_insource)
+        file(REMOVE [CMakeCache.txt CMakeFiles]) 
+        message(FATAL_ERROR "${_errorMessage}")
+    endif (_insource)
 
 endmacro (MACRO_ENSURE_OUT_OF_SOURCE_BUILD)
+
+# vim:ts=4:sw=4:expandtab
