@@ -1,4 +1,4 @@
-macro(MacroCommonPaths NAME 
+macro(MacroCommonPaths NAME)
 	set(COMMON_INCLUDE_PATHS_${NAME}
 		$ENV{${NAME}_DIR}/include
 		$ENV{${NAME}_DIR}
