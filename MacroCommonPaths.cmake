@@ -12,8 +12,8 @@ macro(MacroCommonPaths NAME)
         /opt/local/include # DarwinPorts
         /opt/csw/include # Blastwave
         /opt/include
-        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\Manager\\Environment;${NAME}_DIR]/include
-        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\Manager\\Environment;${NAME}_ROOT]/include
+        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\\Manager\\Environment;${NAME}_DIR]/include
+        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\\Manager\\Environment;${NAME}_ROOT]/include
         /usr/freeware/include
         )
     set(COMMON_LIB_PATHS_${NAME}
@@ -27,8 +27,8 @@ macro(MacroCommonPaths NAME)
         /opt/local/lib
         /opt/csw/lib
         /opt/lib
-        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\Manager\\Environment;${NAME}_DIR]/lib
-        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\Manager\\Environment;${NAME}_ROOT]/lib
+        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\\Manager\\Environment;${NAME}_DIR]/lib
+        [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\\Manager\\Environment;${NAME}_ROOT]/lib
         /usr/freeware/lib64
         )
 endmacro(MacroCommonPaths)
