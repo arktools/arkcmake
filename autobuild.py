@@ -27,7 +27,12 @@ except ImportError:
 	raise SystemExit
 
 ## Move to directory containing CMakeLists.txt and src/
-os.chdir(get_build_path())
+build_path = get_build_path()
+if build_path:
+	os.chdir(build_path)
+else: 
+	print "The script was unable to find a build directory."
+	raise SystemExit
 
 makeargs = "-j8"
 cmakeargs = ""
