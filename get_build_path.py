@@ -18,8 +18,8 @@ def get_build_path():
 	## Initialize search paths
 	call_dir = os.getcwd()
 	script_dir = os.path.dirname(os.path.abspath(__file__))
-	script_mom = os.path.abspath(script_dir+"/..")
-	script_grandma = os.path.abspath(script_mom+"/..")
+	script_mom = os.path.abspath(script_dir + os.sep + os.pardir)
+	script_grandma = os.path.abspath(script_mom + os.sep + os.pardir)
 	if script_mom == call_dir:
 		script_mom = ""
 	if script_grandma == call_dir:
