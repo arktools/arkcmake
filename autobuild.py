@@ -23,6 +23,7 @@ try:
 	from get_build_path import get_build_path
 except ImportError: 
 	print "Could not find 'get_build_path.py' "
+	print "in '%s'" % os.path.dirname(os.path.abspath(__file__))
 	print "This module is required."
 	raise SystemExit
 
@@ -39,9 +40,7 @@ cmakeargs = ""
 build_dir = "build"
 
 def install_build(cmakeargs):
-	if os.path.isdir(build_dir): 
-		print "Directory '%s' exists" % build_dir
-	else:  
+	if not os.path.isdir(build_dir): 
 		os.mkdir(build_dir)
 	os.chdir(build_dir)
 	subprocess.check_call(["cmake", cmakeargs, ".."])
@@ -69,6 +68,7 @@ def grab_deps():
 			raise SystemExit
 	else: 
 		print "Platform not recognized (did not match linux or darwin)"
+		print "Script doesn't download dependencies for this platform"
 	raise SystemExit
 
 def package_source():
@@ -96,6 +96,7 @@ def clean():
 		subprocess.check_call(["rm", "-rf", build_dir])
 	else: 
 		print "Cleaning '%s' with shutil.rmtree()" % build_dir
+		print "(may be very slow)"
 		shutil.rmtree(build_dir, ignore_errors=True)
 	print "Build cleaned"
 
