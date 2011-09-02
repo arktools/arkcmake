@@ -18,6 +18,7 @@
 import sys # for sys.argv[] and sys.platform
 import os # for chdir()
 import subprocess # for check_call()
+import shutil # for rmtree()
 
 makeargs = "-j8"
 cmakeargs = " "
@@ -77,12 +78,16 @@ def remake():
 	raise SystemExit
 
 def clean():
-	for root, dirs, files in os.walk(build_dir, topdown=False): 
-		for name in files: 
-			os.remove(os.path.join(root, name))
-		for name in dirs: 
-			os.rmdir(os.path.join(root, name))
-	os.rmdir(build_dir)
+	shutil.rmtree(build_dir, ignore_errors=True)
+#	if posix in os.name(): 
+#		subprocess.check_call(["rm", "-rf", "build"])
+#	else: 
+#		for root, dirs, files in os.walk(build_dir, topdown=False): 
+#			for name in files: 
+#				os.remove(os.path.join(root, name))
+#			for name in dirs: 
+#				os.rmdir(os.path.join(root, name))
+#		os.rmdir(build_dir)
 	print "Build cleaned"
 
 # requires PROFILE definition in CMakeLists.txt:
@@ -108,7 +113,7 @@ def menu():
 
 try: 
 	loop_num = 0
-	# continues until a function raises system exit
+	# continues until a function raises system exit or ^C
 	while (1): 	
 		if len(sys.argv) == 2 and loop_num == 0:
 			opt = sys.argv[1]
