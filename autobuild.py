@@ -5,6 +5,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # USAGE:                                                                      #
 # $ ./autobuild.py [1-9]                                                      #
+#   Then follow menu                                                          #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # TODO: Error handling: 
@@ -12,35 +13,38 @@
 ## catch CMake Warning:
   #Manually-specified variables were not used by the project:
 		  #BUILD_TYPE
-  # (missing gprof flags)
-
+#     (missing gprof flags)
 
 import sys # for sys.argv[] and sys.platform
 import os # for chdir()
 import subprocess # for check_call()
 import shutil # for rmtree()
+try: 
+	from get_build_path import get_build_path
+except ImportError: 
+	print "Could not find 'get_build_path.py' "
+	print "This module is required."
+	raise SystemExit
+
+## Move to directory containing CMakeLists.txt and src/
+os.chdir(get_build_path())
 
 makeargs = "-j8"
-cmakeargs = " "
+cmakeargs = ""
 build_dir = "build"
 
 def install_build(cmakeargs):
-	try: 
+	if os.path.isdir(build_dir): 
+		print "Directory '%s' exists" % build_dir
+	else:  
 		os.mkdir(build_dir)
-	except OSError as (errno, errstr):
-		if 'exists' in os.strerror(errno): # File exists: 17
-			print "Directory '%s' exists" % build_dir
-		else:
-			raise
 	os.chdir(build_dir)
-	cmake_call = "cmake" + cmakeargs + ".."
-	subprocess.check_call(cmake_call, shell=True)
+	subprocess.check_call(["cmake", cmakeargs, ".."])
 	subprocess.check_call(["make", makeargs])
 	raise SystemExit
 	
 def dev_build():
-	# cmakeargs must begin and end with a space
-	cmakeargs = " -DIN_SRC_BUILD::bool=TRUE "
+	cmakeargs = "-DIN_SRC_BUILD::bool=TRUE"
 	install_build(cmakeargs)
 
 def grab_deps():
@@ -73,21 +77,21 @@ def package():
 	raise SystemExit
 
 def remake():
+	if not os.path.isdir(build_dir): 
+		print "Directory '%s' does not exist" % build_dir
+		print "You must make before you can remake."
+		return 1
 	os.chdir(build_dir)
 	subprocess.check_call(["make", makeargs])
 	raise SystemExit
 
 def clean():
-	shutil.rmtree(build_dir, ignore_errors=True)
-#	if posix in os.name(): 
-#		subprocess.check_call(["rm", "-rf", "build"])
-#	else: 
-#		for root, dirs, files in os.walk(build_dir, topdown=False): 
-#			for name in files: 
-#				os.remove(os.path.join(root, name))
-#			for name in dirs: 
-#				os.rmdir(os.path.join(root, name))
-#		os.rmdir(build_dir)
+	if 'posix' in os.name: 
+		print "Cleaning '%s' with rm -rf" % build_dir
+		subprocess.check_call(["rm", "-rf", build_dir])
+	else: 
+		print "Cleaning '%s' with shutil.rmtree()" % build_dir
+		shutil.rmtree(build_dir, ignore_errors=True)
 	print "Build cleaned"
 
 # requires PROFILE definition in CMakeLists.txt:
@@ -95,7 +99,7 @@ def clean():
 # set(CMAKE_CXX_FLAGS_PROFILE "-g -pg")
 # set(CMAKE_C_FLAGS_PROFILE "-g -pg")
 def profile():
-	cmakeargs = " -DBUILD_TYPE=PROFILE -DIN_SRC_BUILD::bool=TRUE "
+	cmakeargs = "-DBUILD_TYPE=PROFILE -DIN_SRC_BUILD::bool=TRUE"
 	install_build(cmakeargs)
 	
 def menu():
@@ -121,7 +125,11 @@ try:
 		else:
 			opt = menu()
 
-		opt = int(opt)
+		try:
+			opt = int(opt)
+		except ValueError:
+			pass
+			
 		if   opt == 1:
 			print "You chose developer build"
 			dev_build()
