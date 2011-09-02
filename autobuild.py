@@ -36,19 +36,23 @@ else:
 	raise SystemExit
 
 makeargs = "-j8"
-cmakeargs = ""
+# In order to have variable numbers of cmake args
+# TODO: pass args as list?
+cmakeargs = " "
 build_dir = "build"
 
 def install_build(cmakeargs):
 	if not os.path.isdir(build_dir): 
 		os.mkdir(build_dir)
 	os.chdir(build_dir)
-	subprocess.check_call(["cmake", cmakeargs, ".."])
+	cmake_call = "cmake" + cmakeargs + ".."
+	subprocess.check_call(cmake_call, shell=True)
 	subprocess.check_call(["make", makeargs])
 	raise SystemExit
 	
 def dev_build():
-	cmakeargs = "-DIN_SRC_BUILD::bool=TRUE"
+	# cmakeargs must begin and end with a space
+	cmakeargs = " -DIN_SRC_BUILD::bool=TRUE "
 	install_build(cmakeargs)
 
 def grab_deps():
@@ -105,7 +109,8 @@ def clean():
 # set(CMAKE_CXX_FLAGS_PROFILE "-g -pg")
 # set(CMAKE_C_FLAGS_PROFILE "-g -pg")
 def profile():
-	cmakeargs = "-DBUILD_TYPE=PROFILE -DIN_SRC_BUILD::bool=TRUE"
+	# cmakeargs must begin and end with a space
+	cmakeargs = " -DBUILD_TYPE=PROFILE -DIN_SRC_BUILD::bool=TRUE "
 	install_build(cmakeargs)
 	
 def menu():
