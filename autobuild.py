@@ -36,24 +36,20 @@ else:
 	raise SystemExit
 
 makeargs = "-j8"
-# In order to have variable numbers of cmake args
-# TODO: pass args as list?
-cmakeargs = " "
+cmakecall = ["cmake", ".."]
 build_dir = "build"
 
-def install_build(cmakeargs):
+def install_build(cmakecall):
 	if not os.path.isdir(build_dir): 
 		os.mkdir(build_dir)
 	os.chdir(build_dir)
-	cmake_call = "cmake" + cmakeargs + ".."
-	subprocess.check_call(cmake_call, shell=True)
+	subprocess.check_call(cmakecall)
 	subprocess.check_call(["make", makeargs])
 	raise SystemExit
 	
 def dev_build():
-	# cmakeargs must begin and end with a space
-	cmakeargs = " -DIN_SRC_BUILD::bool=TRUE "
-	install_build(cmakeargs)
+	cmakecall.insert(1, "-D IN_SRC_BUILD::bool=TRUE")
+	install_build(cmakecall)
 
 def grab_deps():
 	if 'linux' in sys.platform:
@@ -76,12 +72,12 @@ def grab_deps():
 	raise SystemExit
 
 def package_source():
-	install_build(cmakeargs)
+	install_build(cmakecall)
 	subprocess.check_call(["make", "package_source"])
 	raise SystemExit
 
 def package():
-	install_build(cmakeargs)
+	install_build(cmakecall)
 	subprocess.check_call(["make", "package"])
 	raise SystemExit
 
@@ -109,9 +105,9 @@ def clean():
 # set(CMAKE_CXX_FLAGS_PROFILE "-g -pg")
 # set(CMAKE_C_FLAGS_PROFILE "-g -pg")
 def profile():
-	# cmakeargs must begin and end with a space
-	cmakeargs = " -DBUILD_TYPE=PROFILE -DIN_SRC_BUILD::bool=TRUE "
-	install_build(cmakeargs)
+	cmakecall.insert(1, "-D IN_SRC_BUILD::bool=TRUE")
+	cmakecall.insert(2, "-D BUILD_TYPE=PROFILE")
+	install_build(cmakecall)
 	
 def menu():
 	print "1. developer build: used for development."
@@ -146,7 +142,7 @@ try:
 			dev_build()
 		elif opt == 2:
 			print "You chose install build"
-			install_build(cmakeargs)
+			install_build(cmakecall)
 		elif opt == 3: 
 			print "You chose to install dependencies"
 			grab_deps()
