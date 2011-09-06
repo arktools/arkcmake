@@ -45,7 +45,6 @@ def install_build(cmakecall):
 	os.chdir(build_dir)
 	subprocess.check_call(cmakecall)
 	subprocess.check_call(["make", makeargs])
-	raise SystemExit
 	
 def dev_build():
 	cmakecall.insert(1, "-D IN_SRC_BUILD::bool=TRUE")
@@ -69,17 +68,14 @@ def grab_deps():
 	else: 
 		print "Platform not recognized (did not match linux or darwin)"
 		print "Script doesn't download dependencies for this platform"
-	raise SystemExit
 
 def package_source():
 	install_build(cmakecall)
 	subprocess.check_call(["make", "package_source"])
-	raise SystemExit
 
 def package():
 	install_build(cmakecall)
 	subprocess.check_call(["make", "package"])
-	raise SystemExit
 
 def remake():
 	if not os.path.isdir(build_dir): 
@@ -88,7 +84,6 @@ def remake():
 		return 1
 	os.chdir(build_dir)
 	subprocess.check_call(["make", makeargs])
-	raise SystemExit
 
 def clean():
 	if 'posix' in os.name: 
