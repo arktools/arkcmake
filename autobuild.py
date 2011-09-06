@@ -39,12 +39,14 @@ makeargs = "-j8"
 cmakecall = ["cmake", ".."]
 build_dir = "build"
 
-def install_build(cmakecall):
-	if not os.path.isdir(build_dir): 
-		os.mkdir(build_dir)
-	os.chdir(build_dir)
-	subprocess.check_call(cmakecall)
-	subprocess.check_call(["make", makeargs])
+def install_build(cmakecall, exitVal=True):
+    if not os.path.isdir(build_dir): 
+        os.mkdir(build_dir)
+    os.chdir(build_dir)
+    subprocess.check_call(cmakecall, exitVal)
+    subprocess.check_call(["make", makeargs])
+    if exitVal == True:
+        raise SystemExit
 	
 def dev_build():
 	cmakecall.insert(1, "-D IN_SRC_BUILD::bool=TRUE")
@@ -68,22 +70,26 @@ def grab_deps():
 	else: 
 		print "Platform not recognized (did not match linux or darwin)"
 		print "Script doesn't download dependencies for this platform"
+        raise SystemExit
 
 def package_source():
-	install_build(cmakecall)
-	subprocess.check_call(["make", "package_source"])
+    install_build(cmakecall, exitVal=False)
+    subprocess.check_call(["make", "package_source"])
+    raise SystemExit
 
 def package():
-	install_build(cmakecall)
-	subprocess.check_call(["make", "package"])
+    install_build(cmakecall, exitVal=False)
+    subprocess.check_call(["make", "package"])
+    raise SystemExit
 
 def remake():
-	if not os.path.isdir(build_dir): 
-		print "Directory '%s' does not exist" % build_dir
-		print "You must make before you can remake."
-		return 1
-	os.chdir(build_dir)
-	subprocess.check_call(["make", makeargs])
+    if not os.path.isdir(build_dir): 
+        print "Directory '%s' does not exist" % build_dir
+        print "You must make before you can remake."
+        return 1
+    os.chdir(build_dir)
+    subprocess.check_call(["make", makeargs])
+    raise SystemExit
 
 def clean():
 	if 'posix' in os.name: 
