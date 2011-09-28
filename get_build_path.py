@@ -27,10 +27,10 @@ def get_build_path():
 
 	## Define function to search for required components for build
 	def find_build_dir(search_dir):
-		#BUILDFILE = "CMakeLists.txt"
-		SRCDIR = "src"
+		BUILDFILE = "CMakeLists.txt"
+		#SRCDIR = "src"
 		os.chdir(search_dir)
-		if os.path.isdir(SRCDIR):
+		if os.path.isfile(BUILDFILE):
 			return search_dir
 		return False
 
