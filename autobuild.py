@@ -47,20 +47,29 @@ usage = "usage: %prog [options] [1-9]"
 parser = OptionParser(usage=usage)
 parser.set_defaults(verbose=False, makeargs="-j8")
 parser.add_option("-v", "--verbose",
-                  action="store_true", dest="verbose",
-                  help="Verbose mode")
+				action="store_true", dest="verbose",
+				help="Verbose mode")
+parser.add_option("-c", "--cmake",
+				action="store", dest="cm",
+				help="Specify one or more arguments for CMake")
 #parser.add_option("--makeargs", 
 #                  action="store", type="string", dest="makeargs",
 #                  help="Argument to `make` [default '-j8']")
-#parser.add_option("--cmakeargs", 
-#                  action="store", type="string", dest="cmakeargs",
-#                  help="Arguments to `cmake ..`")
 (options, args) = parser.parse_args()
 if options.verbose:
     os.environ['VERBOSE'] = "1"
+### Split cmakeargs, reassemble, and insert into cmake call
+if options.cm:
+	cm_raw = options.cm
+	cm_list = cm_raw.split("-D")
+	if cm_list[0] == "":
+		cm_list.pop(0)
+	for cm in cm_list:
+		cm = cm.lstrip()
+		cmakearg = "-D" + cm
+		cmakecall.insert(1, cmakearg)
 #if options.makeargs:
 #    makeargs = options.makeargs
-
 
 
 def install_build(cmakecall, exitVal=True):
