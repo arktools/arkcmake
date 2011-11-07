@@ -21,7 +21,7 @@ set(BOOSTNUMERICBINDINGS_PROCESS_INCLUDES BOOSTNUMERICBINDINGS_INCLUDE_DIR)
 libfind_process(BOOSTNUMERICBINDINGS)
 
 macro(find_or_build_boostnumericbindings TAG EP_BASE_DIR EP_INSTALL_PREFIX)
-    find_package(BOOSTNUMERICBINDINGS ${TAG})
+    find_package(BOOSTNUMERICBINDINGS)
     if( NOT BOOSTNUMERICBINDINGS)
         ExternalProject_Add(boost-numeric-bindings
             GIT_REPOSITORY "http://git.tiker.net/trees/boost-numeric-bindings.git"
