@@ -58,5 +58,5 @@ def get_build_path():
 	else: 
 		return 0
 	
-	print "I go now. Good luck, everybody!"
+	#print "I go now. Good luck, everybody!"
 	return build_dir
