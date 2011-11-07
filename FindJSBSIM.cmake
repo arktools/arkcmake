@@ -43,16 +43,13 @@ macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATADIR)
     if(NOT JSBSIM_FOUND)
         ExternalProject_Add(jsbsim
             GIT_REPOSITORY "git://github.com/jgoppert/jsbsim.git"
-            GIT_TAG ${TAG} 
+            GIT_TAG ${TAG}
             UPDATE_COMMAND ""
-            CONFIGURE_COMMAND ${EP_BASE_DIR}/Source/jsbsim/autogen.sh --enable-libraries --prefix=${EP_INSTALL_PREFIX}
-            BUILD_COMMAND make -j4
-            BUILD_IN_SOURCE 1
             INSTALL_DIR ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}
             CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EP_INSTALL_PREFIX}
             INSTALL_COMMAND make DESTDIR=${EP_BASE_DIR} install
             )
-        set(JSBSIM_INCLUDE_DIRS  ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/include ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/include/JSBSim)
+        set(JSBSIM_INCLUDE_DIRS  ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/include ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/include/jsbsim)
         set(JSBSIM_DATA_DIR ${EP_DATADIR}/jsbsim)
          # static lib prefix
         if(WIN32)
@@ -65,7 +62,7 @@ macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATADIR)
             message(FATAL_ERROR "unknown operating system")
         endif()
 
-        set(JSBSIM_LIBRARIES ${EP_LIBDIR}/${STATIC_LIB_PREFIX}JSBSim.a)
+        set(JSBSIM_LIBRARIES ${EP_LIBDIR}/${STATIC_LIB_PREFIX}jsbsim.a)
         set(JSBSIM_FOUND TRUE)
     endif()
 endmacro()
