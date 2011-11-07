@@ -38,7 +38,7 @@ set(JSBSIM_INCLUDES ${JSBSIM_INCLUDES} ${JSBSIM_INCLUDE_DIR}/JSBSim)
 
 libfind_process(JSBSIM)
 
-macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX)
+macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATADIR)
     find_package(JSBSIM ${TAG})
     if(NOT JSBSIM_FOUND)
         ExternalProject_Add(jsbsim
@@ -52,7 +52,7 @@ macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX)
             CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EP_INSTALL_PREFIX}
             INSTALL_COMMAND make DESTDIR=${EP_BASE_DIR} install
             )
-        set(JSBSIM_INCLUDE_DIRS ${EP_INCLUDEDIR} ${EP_INCLUDEDIR}/JSBSim)
+        set(JSBSIM_INCLUDE_DIRS  ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/include ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/include/JSBSim)
         set(JSBSIM_DATA_DIR ${EP_DATADIR}/jsbsim)
          # static lib prefix
         if(WIN32)

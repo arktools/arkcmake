@@ -20,7 +20,7 @@ find_path(MAVLINK_INCLUDE_DIR
 set(MAVLINK_PROCESS_INCLUDES MAVLINK_INCLUDE_DIR)
 libfind_process(MAVLINK)
 
-macro(find_or_build_mavlink TAG EP_BASE_DIR EP_INSTALL_PREFIX)
+macro(find_or_build_mavlink TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATADIR)
     find_package(ARKCOMM ${TAG})
     if( NOT MAVLINK_FOUND)
         ExternalProject_Add(mavlink
