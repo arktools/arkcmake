@@ -35,7 +35,7 @@ set(ARKCOMM_PROCESS_INCLUDES ARKCOMM_INCLUDE_DIR)
 set(ARKCOMM_PROCESS_LIBS ARKCOMM_LIBRARY ARKCOMM_LIBRARIES)
 libfind_process(ARKCOMM)
 
-macro(find_or_build_arkcomm TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATA_DIR)
+macro(find_or_build_arkcomm TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATADIR)
     find_package(ARKCOMM ${TAG})
     if(NOT ARKCOMM_FOUND)
         ExternalProject_Add(arkcomm
