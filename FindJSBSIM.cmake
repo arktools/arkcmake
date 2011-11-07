@@ -68,5 +68,4 @@ macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX)
         set(JSBSIM_LIBRARIES ${EP_LIBDIR}/${STATIC_LIB_PREFIX}JSBSim.a)
         set(JSBSIM_FOUND TRUE)
     endif()
-endif()
-
+endmacro()
