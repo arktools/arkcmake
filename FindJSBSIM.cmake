@@ -62,7 +62,7 @@ macro(find_or_build_jsbsim TAG EP_BASE_DIR EP_INSTALL_PREFIX EP_DATADIR)
             message(FATAL_ERROR "unknown operating system")
         endif()
 
-        set(JSBSIM_LIBRARIES ${EP_LIBDIR}/${STATIC_LIB_PREFIX}jsbsim.a)
+        set(JSBSIM_LIBRARIES ${EP_BASE_DIR}/${EP_INSTALL_PREFIX}/lib/${STATIC_LIB_PREFIX}jsbsim.a)
         set(JSBSIM_FOUND TRUE)
     endif()
 endmacro()
