@@ -23,7 +23,19 @@ git add .
 git commit -a
 ```
 
-### Intermediate steps ###
+Pushing changes to the server **VERY IMPORTANT** do this every time:
+
+```console
+git push
+```
+
+If you get an error from the previous command: 
+
+```console
+git push origin master
+```
+
+## Intermediate steps ##
 
 To only commit changes to the file "new":
 (example: you changed trim states but do not want to save them)
