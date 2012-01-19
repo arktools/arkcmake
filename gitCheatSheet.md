@@ -50,7 +50,9 @@ Reverting all changes since last commit:
 ```console
 git reset --hard
 ```
-Using branches (a great idea if you think you might break everything)
+## Using branches ##
+
+A great idea if you think you might break everything!
 
 ```console
 git branch experiment
