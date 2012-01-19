@@ -2,6 +2,8 @@
 
 This is a list of basic commands for git. 
 
+These commands are for a repository that is already set up. See bottom for setup instructions. 
+
 ## Daily use ##
 
 Always do this before beginning any work to get any changes someone else may have made (this can avoid a lot of headaches):
@@ -74,7 +76,7 @@ git merge experiment
 ## Initial setup ##
 
 To fetch a project for the first time (aka clone a repository):
-(substitute appropriate address)
+_substitute appropriate address_
 
 ```console
 git clone git@github.com:jgoppert/jsbsim.git
