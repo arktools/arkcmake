@@ -5,16 +5,19 @@ This is a list of basic commands for git.
 ## Daily use ##
 
 Always do this before beginning any work to get any changes someone else may have made:
+
 ```console
 git pull
 ```
 
 To see current un-committed changes: 
+
 ```console
 git diff
 ```
 
 To add new and changed files, then commit changes:
+
 ```console
 git add .
 git commit -a
