@@ -16,11 +16,20 @@ To see current un-committed changes:
 git diff
 ```
 
-To add new and changed files, then commit changes:
+To add all new and changed files, then commit changes:
 
 ```console
 git add .
 git commit -a
+```
+
+### Slightly more complicated committing ###
+
+To only commit changes to the file "test":
+
+```console
+git add test
+git commit
 ```
 
 ## Initial setup ##
