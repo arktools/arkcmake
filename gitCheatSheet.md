@@ -4,7 +4,7 @@ This is a list of basic commands for git.
 
 ## Daily use ##
 
-Always do this before beginning any work to get any changes someone else may have made:
+Always do this before beginning any work to get any changes someone else may have made (this can avoid a lot of headaches):
 
 ```console
 git pull
@@ -23,13 +23,38 @@ git add .
 git commit -a
 ```
 
-### Slightly more complicated committing ###
+### Intermediate steps ###
 
-To only commit changes to the file "test":
+To only commit changes to the file "new":
+(example: you changed trim states but do not want to save them)
 
 ```console
-git add test
+git add new
 git commit
+```
+
+Reverting all changes since last commit:
+
+```console
+git reset --hard
+```
+Using branches (a great idea if you think you might break everything)
+
+```console
+git branch experiment
+git checkout experiment
+```
+
+To switch back to the main files: 
+
+```console
+git checkout master
+```
+
+To combine the code from the branch back into the main files (this may cause conflicts, which will be clearly marked in the file):
+
+```console
+git merge experiment
 ```
 
 ## Initial setup ##
