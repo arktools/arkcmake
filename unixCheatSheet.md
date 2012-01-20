@@ -50,6 +50,7 @@ To move a file from the current directory into the directory 'src/':
 
 ```console
 mv testfile src/
+```
 
 To rename a file: 
 
