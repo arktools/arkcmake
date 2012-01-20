@@ -32,10 +32,33 @@ If there are directories inside the current directory (use 'ls -al', directories
 cd Projects/jsbsim
 ```
 
-If you want to move to a directory *outside* of the current directory, use an absolute path (the same thing that would be returned by 'pwd'): 
+If you want to move to a directory *outside* of the current directory, use an absolute path (the same thing that would be returned by 'pwd', notice that it begins with a slash): 
 
 ```console
 cd /usr/local
 ```
 
-'cp' is copy and 'mv' is move.
+Another important symbol is the tilde (~), which means the home directory of the current user (the same place 'cd' will move to):
+
+```console
+cd ~/Projects/jsbsim
+```
+
+'cp' is copy and 'mv' is move, which is also used to rename files.
+
+To move a file from the current directory into the directory 'src/':
+
+```console
+mv testfile src/
+
+To rename a file: 
+
+```console
+mv testfile release
+```
+
+To copy a file: 
+
+```console
+cp release test
+```
