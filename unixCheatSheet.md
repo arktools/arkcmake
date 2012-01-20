@@ -1,4 +1,4 @@
-# Using Unix and vi # 
+# Using Unix and vi #
 
 A few basic Unix commands are all that is necessary to be able to work with files. 
 
