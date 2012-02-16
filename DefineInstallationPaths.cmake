@@ -17,7 +17,7 @@ set(INSTALL_BIN_DIR "${INSTALL_EXEC_PREFIX}/bin" CACHE PATH "The ${APPLICATION_N
 set(INSTALL_SBIN_DIR "${INSTALL_EXEC_PREFIX}/sbin" CACHE PATH "The ${APPLICATION_NAME} sbin install dir (default prefix/sbin)")
 set(INSTALL_LIB_DIR "${INSTALL_EXEC_PREFIX}/lib${LIB_SUFFIX}" CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed (default is prefix/lib)")
 set(INSTALL_LIBEXEC_DIR "${INSTALL_EXEC_PREFIX}/libexec" CACHE PATH "The subdirectory relative to the install prefix where libraries will be installed (default is prefix/libexec)")
-set(INSTALL_PLUGIN_DIR "${LIB_DIR}/${APPLICATION_NAME}" CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_NAME})")
+set(INSTALL_PLUGIN_DIR "${INSTALL_LIB_DIR}/${APPLICATION_NAME}" CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_NAME})")
 set(INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The subdirectory to the header prefix (default prefix/include)")
 set(INSTALL_DATA_DIR "${INSTALL_DATA_PREFIX}" CACHE PATH "The parent directory where applications can install their data (default prefix/share/${APPLICATION_NAME})")
 set(INSTALL_HTML_DIR "${INSTALL_DATA_PREFIX}/doc/HTML" CACHE PATH "The HTML install dir for documentation (default data/doc/html)")
