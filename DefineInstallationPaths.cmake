@@ -8,8 +8,8 @@ endif (NOT APPLICATION_NAME)
 set(INSTALL_LIB_SUFFIX CACHE STRING "Define suffix of directory name (32/64)")
 
 # install prefixes
-set(INSTALL_EXEC_PREFIX "${CMAKE_PREFIX}" CACHE PATH  "Base directory for executables and libraries")
-set(INSTALL_SHARE_PREFIX "${CMAKE_PREFIX}/share" CACHE PATH "Base directory for files which go to share/")
+set(INSTALL_EXEC_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH  "Base directory for executables and libraries")
+set(INSTALL_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Base directory for files which go to share/")
 set(INSTALL_DATA_PREFIX "${SHARE_PREFIX}/${APPLICATION_NAME}" CACHE PATH "The parent directory where applications can install their data")
 
 # The following are directories where stuff will be installed to
