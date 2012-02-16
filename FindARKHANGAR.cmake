@@ -26,7 +26,7 @@ set(ARKHANGAR_DATA_DIR ${ARKHANGAR_DATA_DIR_SEARCH}/arkhangar)
 set(ARKHANGAR_PROCESS_INCLUDES ARKHANGAR_INCLUDE_DIR)
 libfind_process(ARKHANGAR)
 
-macro(build_arkhangar TAG EP_BASE_DIR EP_DATADIR)
+macro(build_arkhangar TAG EP_BASE_DIR)
     if( NOT ARKHANGAR_FOUND)
         ExternalProject_Add(arkhangar
             GIT_REPOSITORY "git://github.com/arktools/arkhangar.git"
@@ -41,7 +41,7 @@ macro(build_arkhangar TAG EP_BASE_DIR EP_DATADIR)
         )
         set(ARKHANGAR_INCLUDE_DIR "")
         set(ARKHANGAR_INCLUDES_DIR "")
-        set(ARKHANGAR_DATA_DIR "${EP_DATADIR}/arkhangar")
+        set(ARKHANGAR_DATA_DIR "${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/share/arkhangar")
         set(ARKHANGAR_FOUND TRUE)
     endif()
 endmacro()

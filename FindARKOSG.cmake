@@ -42,7 +42,7 @@ set(ARKOSG_PROCESS_INCLUDES ARKOSG_INCLUDE_DIR)
 set(ARKOSG_PROCESS_LIBS ARKOSG_LIBRARY ARKOSG_LIBRARIES)
 libfind_process(ARKOSG)
 
-macro(build_arkosg TAG EP_BASE_DIR EP_DATADIR)
+macro(build_arkosg TAG EP_BASE_DIR)
     if(NOT ARKOSG_FOUND)
         ExternalProject_Add(arkosg
             GIT_REPOSITORY "git://github.com/arktools/arkosg.git"
@@ -56,7 +56,7 @@ macro(build_arkosg TAG EP_BASE_DIR EP_DATADIR)
             INSTALL_COMMAND make DESTDIR=${EP_BASE_DIR} install
            )
         set(ARKOSG_INCLUDE_DIRS ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/include)
-        set(ARKOSG_DATA_DIR ${EP_DATADIR}/arkosg/data)
+        set(ARKOSG_DATA_DIR ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/share/arkosg/data)
         set(ARKOSG_LIBRARIES ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/lib/libarkosg.a)
         set(ARKOSG_FOUND TRUE)
     endif()

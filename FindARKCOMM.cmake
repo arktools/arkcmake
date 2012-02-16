@@ -35,7 +35,7 @@ set(ARKCOMM_PROCESS_INCLUDES ARKCOMM_INCLUDE_DIR)
 set(ARKCOMM_PROCESS_LIBS ARKCOMM_LIBRARY ARKCOMM_LIBRARIES)
 libfind_process(ARKCOMM)
 
-macro(build_arkcomm TAG EP_BASE_DIR EP_DATADIR)
+macro(build_arkcomm TAG EP_BASE_DIR)
     if(NOT ARKCOMM_FOUND)
         ExternalProject_Add(arkcomm
             GIT_REPOSITORY "git://github.com/arktools/arkcomm.git"

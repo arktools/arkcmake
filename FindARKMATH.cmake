@@ -56,7 +56,7 @@ macro(build_arkmath TAG EP_BASE_DIR EP_DATADIR)
             INSTALL_COMMAND make DESTDIR=${EP_BASE_DIR} install
            )
         set(ARKMATH_INCLUDE_DIRS ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/include)
-        set(ARKMATH_DATA_DIR ${EP_DATADIR}/arkmath/data)
+        set(ARKMATH_DATA_DIR ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/share/arkmath)
         set(ARKMATH_LIBRARIES ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/lib/libarkmath.a)
         set(ARKMATH_FOUND TRUE)
     endif()
