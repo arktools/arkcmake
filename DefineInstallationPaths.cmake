@@ -12,7 +12,7 @@ if (NOT CPACK_INSTALL_PREFIX)
 endif()
 
 # install prefixes
-if (APPLE AND (CPACK_GENERATOR == "Bundle"))
+if (APPLE AND (CPACK_GENERATOR STREQUAL "Bundle"))
 	set(CPACK_GENERATOR_PREFIX "/Applications/${APPLICATION_NAME}.app/")
 else()
 	set(CPACK_GENERATOR_PREFIX "")
