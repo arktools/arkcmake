@@ -14,7 +14,7 @@ endif()
 # install prefixes
 if (APPLE AND (CPACK_GENERATOR STREQUAL "Bundle"))
 	set(CPACK_GENERATOR_PREFIX "/Applications/${APPLICATION_NAME}.app/")
-else if(WIN32)
+elseif(WIN32)
 	set(CPACK_GENERATOR_PREFIX "C:/Program Files/${APPLICATION_NAME}-${APPLICATION_VERSION}/")
 else()
 	set(CPACK_GENERATOR_PREFIX "")
