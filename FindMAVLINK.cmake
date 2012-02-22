@@ -11,7 +11,7 @@ MacroCommonPaths(MAVLINK)
 
 # Include dir
 find_path(MAVLINK_INCLUDE_DIR
-    NAMES mavlink/mavlink_types.h
+    NAMES mavlink/v1.0/mavlink_types.h
     PATHS ${COMMON_INCLUDE_PATHS_MAVLINK}
 )
 
