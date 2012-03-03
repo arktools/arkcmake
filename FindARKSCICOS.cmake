@@ -36,6 +36,7 @@ set(ARKSCICOS_PROCESS_LIBS ARKSCICOS_LIBRARY ARKSCICOS_LIBRARIES)
 libfind_process(ARKSCICOS)
 
 macro(build_arkscicos TAG EP_BASE_DIR CMAKE_ARGS)
+    list(APPEND CMAKE_ARGS "-DEP_BASE_DIR=${EP_BASE_DIR}")
     ExternalProject_Add(arkscicos
         GIT_REPOSITORY "git://github.com/arktools/arkscicos.git"
         GIT_TAG ${TAG}

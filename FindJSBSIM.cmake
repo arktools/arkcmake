@@ -38,6 +38,7 @@ set(JSBSIM_PROCESS_LIBS JSBSIM_LIBRARY JSBSIM_LIBRARIES)
 libfind_process(JSBSIM)
 
 macro(build_jsbsim TAG EP_BASE_DIR CMAKE_ARGS)
+    list(APPEND CMAKE_ARGS "-DEP_BASE_DIR=${EP_BASE_DIR}")
     ExternalProject_Add(jsbsim
         GIT_REPOSITORY "git://github.com/jgoppert/jsbsim.git"
         GIT_TAG ${TAG}

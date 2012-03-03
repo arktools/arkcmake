@@ -35,6 +35,7 @@ set(ARKOSG_PROCESS_LIBS ARKOSG_LIBRARY ARKOSG_LIBRARIES)
 libfind_process(ARKOSG)
 
 macro(build_arkosg TAG EP_BASE_DIR CMAKE_ARGS)
+    list(APPEND CMAKE_ARGS "-DEP_BASE_DIR=${EP_BASE_DIR}")
     ExternalProject_Add(arkosg
         GIT_REPOSITORY "git://github.com/arktools/arkosg.git"
         GIT_TAG ${TAG}
