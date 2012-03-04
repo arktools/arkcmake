@@ -19,16 +19,3 @@ find_path(BOOSTNUMERICBINDINGS_INCLUDE_DIR
 # NOTE: Singular variables for this library, plural for libraries this this lib depends on.
 set(BOOSTNUMERICBINDINGS_PROCESS_INCLUDES BOOSTNUMERICBINDINGS_INCLUDE_DIR)
 libfind_process(BOOSTNUMERICBINDINGS)
-
-macro(build_boostnumericbindings TAG EP_BASE_DIR ARGS)
-    list(APPEND CMAKE_ARGS "-DEP_BASE_DIR=${EP_BASE_DIR}")
-    ExternalProject_Add(boost-numeric-bindings
-        GIT_REPOSITORY "http://git.tiker.net/trees/boost-numeric-bindings.git"
-        GIT_TAG ${BOOSTNUMERICBINDINGS_TAG}
-        BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_DIR ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E  copy_directory boost ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}/include/boost
-    )
-endmacro()

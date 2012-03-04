@@ -27,14 +27,3 @@ find_library(SIMGEAR_LIBRARY
 set(SIMGEAR_PROCESS_INCLUDES SIMGEAR_INCLUDE_DIR)
 set(SIMGEAR_PROCESS_LIBS SIMGEAR_LIBRARY)
 libfind_process(SIMGEAR)
-
-macro(build_simgear TAG EP_BASE_DIR CMAKE_ARGS)
-    ExternalProject_Add(simgear
-        GIT_REPOSITORY "git clone git://gitorious.org/fg/simgear.git"
-        GIT_TAG ${TAG}
-        UPDATE_COMMAND ""
-        INSTALL_DIR ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}
-        CMAKE_ARGS ${CMAKE_ARGS}
-        INSTALL_COMMAND make DESTDIR=${EP_BASE_DIR} install
-    )
-endmacro()

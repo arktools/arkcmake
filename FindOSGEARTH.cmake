@@ -37,14 +37,3 @@ set(OSGEARTH_INCLUDE_DIR ${OSGEARTH_INCLUDE_DIR})
 set(OSGEARTH_INCLUDES ${OSGEARTH_INCLUDES})
 
 libfind_process(OSGEARTH)
-
-macro(build_osgearth TAG EP_BASE_DIR CMAKE_ARGS)
-    ExternalProject_Add(osgearth
-        GIT_REPOSITORY "git://github.com/gwaldron/osgearth.git"
-        GIT_TAG ${TAG}
-        PATCH_COMMAND sed -i s/FIND_PACKAGE\(OSG\)/FIND_PACKAGE\(OpenSceneGraph\)/g CMakeLists.txt
-        INSTALL_DIR ${EP_BASE_DIR}/${CMAKE_INSTALL_PREFIX}
-        CMAKE_ARGS ${CMAKE_ARGS}
-        INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} DESTDIR=${EP_BASE_DIR} install
-        )
-endmacro()
