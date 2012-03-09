@@ -1,181 +1,81 @@
-# Locate PLIB
-# This module defines
-# PLIB_LIBRARIES
-# PLIB_FOUND, if false, do not try to link to PLIB 
-# PLIB_INCLUDE_DIR, where to find the headers
+# - Try to find  PLIB
+# Once done, this will define
 #
-# $PLIBDIR is an environment variable that would
-# correspond to the ./configure --prefix=$PLIBDIR
-# used in building PLIB.
+#  PLIB_FOUND        : library found
+#  PLIB_INCLUDE_DIRS : include directories
+#  PLIB_LIBRARIES    : libraries to link to
+#  PLIB_VERSION      : version
 #
-# Created by James Turner. This was influenced by the FindOpenAL.cmake module.
-
-#=============================================================================
-# Copyright 2005-2009 Kitware, Inc.
+# when listing components, list in the order below
+# to ensure proper static linking
 #
-# Distributed under the OSI-approved BSD License (the "License");
-# see accompanying file Copyright.txt for details.
+# core compoennts:
+#        comps
+#        environment
+#        nasal
+#        tsync
+#        bucket
+#        route
+#        io
+#        serial
+#        math
+#        props
+#        structure
+#        timing
+#        xml
+#        misc
+#        threads
+#        debug
+#        magvar
 #
-# This software is distributed WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the License for more information.
-#=============================================================================
-# (To distributed this file outside of CMake, substitute the full
-#  License text for the above reference.)
+# scene components:
+#        ephem
+#        sky
+#        material
+#        tgdb
+#        model
+#        screen
+#        bvh
+#        util
+#        sound
 
-# Per my request, CMake should search for frameworks first in
-# the following order:
-# ~/Library/Frameworks/OpenAL.framework/Headers
-# /Library/Frameworks/OpenAL.framework/Headers
-# /System/Library/Frameworks/OpenAL.framework/Headers
-#
-# On OS X, this will prefer the Framework version (if found) over others.
-# People will have to manually change the cache values of 
-# OPENAL_LIBRARY to override this selection or set the CMake environment
-# CMAKE_INCLUDE_PATH to modify the search paths.
-
-include(SelectLibraryConfigurations)
-
-set(save_FIND_FRAMEWORK ${CMAKE_FIND_FRAMEWORK})
-set(CMAKE_FIND_FRAMEWORK ONLY)
-FIND_PATH(PLIB_INCLUDE_DIR ul.h
-  PATH_SUFFIXES include/plib include 
-  PATHS
-  ~/Library/Frameworks
-  /Library/Frameworks
-)
-set(CMAKE_FIND_FRAMEWORK ${save_FIND_FRAMEWORK})
-
-if(NOT PLIB_INCLUDE_DIR)
-    FIND_PATH(PLIB_INCLUDE_DIR plib/ul.h
-      PATH_SUFFIXES include 
-      HINTS $ENV{PLIBDIR}
-      PATHS
-      /usr/local
-      /opt/local
-      /usr
-    )
-endif()
-
-message(STATUS ${PLIB_INCLUDE_DIR})
-
-# check for dynamic framework on Mac ()
-FIND_LIBRARY(PLIB_LIBRARIES
-  NAMES plib PLIB
-  HINTS
-  $ENV{PLIBDIR}
-  PATHS
-  ~/Library/Frameworks
-  /Library/Frameworks
-)
-
-if (MSVC) 
-   set (PUNAME "pui")
-else (MSVC)
-   set (PUNAME "pu")
-endif (MSVC)
-
-
-macro(find_static_component comp libs)
-    # account for alternative Windows PLIB distribution naming
-    if(MSVC)
-      set(compLib "${comp}")
-    else(MSVC)
-      set(compLib "plib${comp}")
-    endif(MSVC)
-    
-    string(TOUPPER "PLIB_${comp}" compLibBase)
-    set( compLibName ${compLibBase}_LIBRARY )
-
-    FIND_LIBRARY(${compLibName}_DEBUG
-      NAMES ${compLib}_d
-      HINTS $ENV{PLIBDIR}
-      PATH_SUFFIXES lib64 lib libs64 libs libs/Win32 libs/Win64
-      PATHS
-      /usr/local
-      /usr
-      /opt
-    )
-    FIND_LIBRARY(${compLibName}_RELEASE
-      NAMES ${compLib}
-      HINTS $ENV{PLIBDIR}
-      PATH_SUFFIXES lib64 lib libs64 libs libs/Win32 libs/Win64
-      PATHS
-      /usr/local
-      /usr
-      /opt
-    )
-    select_library_configurations( ${compLibBase} )
-
-    set(componentLibRelease ${${compLibName}_RELEASE})
-    #message(STATUS "Simgear ${compLibName}_RELEASE ${componentLibRelease}")
-    set(componentLibDebug ${${compLibName}_DEBUG})
-    #message(STATUS "Simgear ${compLibName}_DEBUG ${componentLibDebug}")
-    if (NOT ${compLibName}_DEBUG)
-        if (NOT ${compLibName}_RELEASE)
-            #message(STATUS "found ${componentLib}")
-            list(APPEND ${libs} ${componentLibRelease})
-        endif()
-    else()
-        list(APPEND ${libs} optimized ${componentLibRelease} debug ${componentLibDebug})
-    endif()
-endmacro()
-
-if(${PLIB_LIBRARIES} STREQUAL "PLIB_LIBRARIES-NOTFOUND")    
-    set(PLIB_LIBRARIES "") # clear value
-    
-# based on the contents of deps, add other required PLIB
-# static library dependencies. Eg PUI requires SSG and FNT
-    set(outDeps ${PLIB_FIND_COMPONENTS})
-    
-    foreach(c ${PLIB_FIND_COMPONENTS})
-        if (${c} STREQUAL "pu")
-            # handle MSVC confusion over pu/pui naming, by removing
-            # 'pu' and then adding it back
-            list(REMOVE_ITEM outDeps "pu")
-            list(APPEND outDeps ${PUNAME} "fnt" "ssg" "sg")
-        elseif (${c} STREQUAL "puaux")
-            list(APPEND outDeps ${PUNAME} "fnt" "ssg" "sg")
-        elseif (${c} STREQUAL "ssg")
-            list(APPEND outDeps "sg")
-        endif()
-    endforeach()
-        
-    list(APPEND outDeps "ul") # everything needs ul
-    list(REMOVE_DUPLICATES outDeps) # clean up
-
-    
-
-    # look for traditional static libraries
-    foreach(component ${outDeps})
-        find_static_component(${component} PLIB_LIBRARIES)
-    endforeach()
-endif()
-
-list(FIND outDeps "js" haveJs)
-if(${haveJs} GREATER -1)
-    message(STATUS "adding runtime JS dependencies")
-    if(APPLE)
-    # resolve frameworks to full paths
-        find_library(IOKIT_LIBRARY IOKit)
-        find_library(CF_LIBRARY CoreFoundation)
-        set(JS_LIBS ${IOKIT_LIBRARY} ${CF_LIBRARY})
-    elseif(WIN32)
-        set(WINMM_LIBRARY winmm)
-        set(JS_LIBS ${WINMM_LIBRARY})
-    elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-        # anything needed here?
-    elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
-        find_library(USBHID_LIBRARY usbhid)
-        # check_function_exists(hidinit)
-        set(JS_LIBS ${USBHID_LIBRARY})
-    else()
-        message(WARNING "Unsupported platform for PLIB JS libs")
-    endif()
-    
-    list(APPEND PLIB_LIBRARIES ${JS_LIBS})
-endif()
-
+# macros
 include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(PLIB DEFAULT_MSG PLIB_LIBRARIES PLIB_INCLUDE_DIR)
 
+# find the include directory
+find_path(_PLIB_INCLUDE_DIR
+	NAMES plib/ul.h
+    )
+
+# read the version
+if (EXISTS ${_PLIB_INCLUDE_DIR}/ul.h)
+    file(READ ${_PLIB_DATADIR}/ul.h PLIB_VERSION_FILE)
+    string(REGEX MATCH "^# define PLIB_MAJOR_VERSION.*([0-9])")
+    set(_PLIB_MAJOR_VERSION ${CMAKE_MATCH_0})
+    string(REGEX MATCH "^# define PLIB_MINOR_VERSION.*([0-9])")
+    set(_PLIB_MINOR_VERSION ${CMAKE_MATCH_0})
+    string(REGEX MATCH "^# define PLIB_TINY_VERSION.*([0-9])")
+    set(_PLIB_TINY_VERSION ${CMAKE_MATCH_0})
+    set(PLIB_VERSION "${PLIB_MAJOR_VERSION}.${PLIB_MINOR_VERSION}.${PLIB_TINY_VERSION}")
+endif()
+
+# find components
+set(PLIB_LIBRARIES "")
+if ("${PLIB_FIND_COMPONENTS}" STREQUAL "")
+    message(FATAL_ERROR "FindPLIB: must specify a plib library as a component.")
+endif()
+foreach(component ${PLIB_FIND_COMPONENTS})
+    string(TOUPPER ${component} component_uc) 
+    string(TOLOWER ${component} component_lc) 
+    find_library(PLIB_${component_uc}
+        NAMES plib${component_lc}
+        )
+    list(APPEND PLIB_LIBRARIES ${PLIB_${component_uc}})
+endforeach()
+
+# handle arguments
+set(PLIB_INCLUDE_DIRS ${_PLIB_INCLUDE_DIR})
+find_package_handle_standard_args(PLIB
+    REQUIRED_VARS PLIB_LIBRARIES PLIB_INCLUDE_DIRS
+    VERSION_VAR PLIB_VERSION
+    )

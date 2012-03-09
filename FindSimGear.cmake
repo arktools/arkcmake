@@ -44,7 +44,7 @@ include(FindPackageHandleStandardArgs)
 
 # find the include directory
 find_path(_SIMGEAR_INCLUDE_DIR
-	NAMES simgear/AsyncSerial.hpp
+	NAMES simgear/version.h
     )
 
 # find the library
@@ -60,27 +60,28 @@ find_path(SIMGEAR_DATADIR
 
 
 # read the version
-if (EXISTS ${_SIMGEAR_INCLUDE_DIR}/VERSION)
-    file(READ ${_SIMGEAR_DATADIR}/VERSION SIMGEAR_VERSION_FILE)
+if (EXISTS ${_SIMGEAR_INCLUDE_DIR}/version.h)
+    file(READ ${_SIMGEAR_INCLUDE_DIR}/version.h SIMGEAR_VERSION_FILE)
     string(REGEX MATCH "^# define SIMGEAR_VERSION.*([0-9]\.[0-9]\.[0-9])")
     set(SIMGEAR_VERSION ${CMAKE_MATCH_0})
 endif()
 
 # find components
 set(SIMGEAR_LIBRARIES "")
+if ("${SimGear_FIND_COMPONENTS}" STREQUAL "")
+    message(FATAL_ERROR "FindSimGear: must specify a simgaer library as a component.")
+endif()
 foreach(component ${SimGear_FIND_COMPONENTS})
     string(TOUPPER ${component} component_uc) 
     string(TOLOWER ${component} component_lc) 
     find_library(SIMGEAR_${component_uc}
         NAMES sg${component_lc}
-        PATHS ${SIMGEAR_DIR}
         )
     list(APPEND SIMGEAR_LIBRARIES ${SIMGEAR_${component_uc}})
 endforeach()
 
 # handle arguments
 set(SIMGEAR_INCLUDE_DIRS ${_SIMGEAR_INCLUDE_DIR})
-set(SIMGEAR_LIBRARIES ${_SIMGEAR_LIBRARY})
 find_package_handle_standard_args(SimGear
     REQUIRED_VARS SIMGEAR_LIBRARIES SIMGEAR_INCLUDE_DIRS
     VERSION_VAR SIMGEAR_VERSION
