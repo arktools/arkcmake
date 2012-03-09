@@ -1,90 +1,181 @@
-# - Try to find  PLIB
-# Once done, this will define
+# Locate PLIB
+# This module defines
+# PLIB_LIBRARIES
+# PLIB_FOUND, if false, do not try to link to PLIB 
+# PLIB_INCLUDE_DIR, where to find the headers
 #
-#  PLIB_FOUND - system has scicoslab 
-#  PLIB_INCLUDE_DIRS - the scicoslab include directories
-#  PLIB_LIBRARIES - libraries to link to
+# $PLIBDIR is an environment variable that would
+# correspond to the ./configure --prefix=$PLIBDIR
+# used in building PLIB.
+#
+# Created by James Turner. This was influenced by the FindOpenAL.cmake module.
 
-include(LibFindMacros)
-include(MacroCommonPaths)
+#=============================================================================
+# Copyright 2005-2009 Kitware, Inc.
+#
+# Distributed under the OSI-approved BSD License (the "License");
+# see accompanying file Copyright.txt for details.
+#
+# This software is distributed WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the License for more information.
+#=============================================================================
+# (To distributed this file outside of CMake, substitute the full
+#  License text for the above reference.)
 
-MacroCommonPaths(PLIB)
+# Per my request, CMake should search for frameworks first in
+# the following order:
+# ~/Library/Frameworks/OpenAL.framework/Headers
+# /Library/Frameworks/OpenAL.framework/Headers
+# /System/Library/Frameworks/OpenAL.framework/Headers
+#
+# On OS X, this will prefer the Framework version (if found) over others.
+# People will have to manually change the cache values of 
+# OPENAL_LIBRARY to override this selection or set the CMake environment
+# CMAKE_INCLUDE_PATH to modify the search paths.
 
-# Include dir
-find_path(PLIB_INCLUDE_DIR
-	NAMES plib/net.h
-	PATHS ${COMMON_INCLUDE_PATHS_PLIB}
-)
+include(SelectLibraryConfigurations)
 
-# the library itself
-find_library(PLIB_FNT_LIBRARY
-	NAMES plibfnt
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
+set(save_FIND_FRAMEWORK ${CMAKE_FIND_FRAMEWORK})
+set(CMAKE_FIND_FRAMEWORK ONLY)
+FIND_PATH(PLIB_INCLUDE_DIR ul.h
+  PATH_SUFFIXES include/plib include 
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
 )
-find_library(PLIB_JS_LIBRARY
-	NAMES plibjs
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_NET_LIBRARY
-	NAMES plibnet
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_PSL_LIBRARY
-	NAMES plibpsl
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_PU_LIBRARY
-	NAMES plibpu
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_PUAUX_LIBRARY
-	NAMES plibpuaux
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_PW_LIBRARY
-	NAMES plibpw
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_SG_LIBRARY
-	NAMES plibsg
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_SL_LIBRARY
-	NAMES plibsl
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_SM_LIBRARY
-	NAMES plibsm
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_SSG_LIBRARY
-	NAMES plibssg
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_SSGAUX_LIBRARY
-	NAMES plibssgaux
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
-find_library(PLIB_UL_LIBRARY
-	NAMES plibul
-	PATHS ${COMMON_LIBRARY_PATHS_PLIB}
-)
+set(CMAKE_FIND_FRAMEWORK ${save_FIND_FRAMEWORK})
 
-# Set the include dir variables and the libraries and let libfind_process do the rest.
-# NOTE: Singular variables for this library, plural for libraries this this lib depends on.
-set(PLIB_PROCESS_INCLUDES PLIB_INCLUDE_DIR)
-set(PLIB_PROCESS_LIBS
-    PLIB_FNT_LIBRARY
-    PLIB_JS_LIBRARY
-    PLIB_NET_LIBRARY
-    PLIB_PSL_LIBRARY
-    PLIB_PU_LIBRARY
-    PLIB_PUAUX_LIBRARY
-    PLIB_SG_LIBRARY
-    PLIB_SL_LIBRARY
-    PLIB_SM_LIBRARY
-    PLIB_SSG_LIBRARY
-    PLIB_SSGAUX_LIBRARY
-    PLIB_UL_LIBRARY
+if(NOT PLIB_INCLUDE_DIR)
+    FIND_PATH(PLIB_INCLUDE_DIR plib/ul.h
+      PATH_SUFFIXES include 
+      HINTS $ENV{PLIBDIR}
+      PATHS
+      /usr/local
+      /opt/local
+      /usr
     )
-libfind_process(PLIB)
+endif()
+
+message(STATUS ${PLIB_INCLUDE_DIR})
+
+# check for dynamic framework on Mac ()
+FIND_LIBRARY(PLIB_LIBRARIES
+  NAMES plib PLIB
+  HINTS
+  $ENV{PLIBDIR}
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+)
+
+if (MSVC) 
+   set (PUNAME "pui")
+else (MSVC)
+   set (PUNAME "pu")
+endif (MSVC)
+
+
+macro(find_static_component comp libs)
+    # account for alternative Windows PLIB distribution naming
+    if(MSVC)
+      set(compLib "${comp}")
+    else(MSVC)
+      set(compLib "plib${comp}")
+    endif(MSVC)
+    
+    string(TOUPPER "PLIB_${comp}" compLibBase)
+    set( compLibName ${compLibBase}_LIBRARY )
+
+    FIND_LIBRARY(${compLibName}_DEBUG
+      NAMES ${compLib}_d
+      HINTS $ENV{PLIBDIR}
+      PATH_SUFFIXES lib64 lib libs64 libs libs/Win32 libs/Win64
+      PATHS
+      /usr/local
+      /usr
+      /opt
+    )
+    FIND_LIBRARY(${compLibName}_RELEASE
+      NAMES ${compLib}
+      HINTS $ENV{PLIBDIR}
+      PATH_SUFFIXES lib64 lib libs64 libs libs/Win32 libs/Win64
+      PATHS
+      /usr/local
+      /usr
+      /opt
+    )
+    select_library_configurations( ${compLibBase} )
+
+    set(componentLibRelease ${${compLibName}_RELEASE})
+    #message(STATUS "Simgear ${compLibName}_RELEASE ${componentLibRelease}")
+    set(componentLibDebug ${${compLibName}_DEBUG})
+    #message(STATUS "Simgear ${compLibName}_DEBUG ${componentLibDebug}")
+    if (NOT ${compLibName}_DEBUG)
+        if (NOT ${compLibName}_RELEASE)
+            #message(STATUS "found ${componentLib}")
+            list(APPEND ${libs} ${componentLibRelease})
+        endif()
+    else()
+        list(APPEND ${libs} optimized ${componentLibRelease} debug ${componentLibDebug})
+    endif()
+endmacro()
+
+if(${PLIB_LIBRARIES} STREQUAL "PLIB_LIBRARIES-NOTFOUND")    
+    set(PLIB_LIBRARIES "") # clear value
+    
+# based on the contents of deps, add other required PLIB
+# static library dependencies. Eg PUI requires SSG and FNT
+    set(outDeps ${PLIB_FIND_COMPONENTS})
+    
+    foreach(c ${PLIB_FIND_COMPONENTS})
+        if (${c} STREQUAL "pu")
+            # handle MSVC confusion over pu/pui naming, by removing
+            # 'pu' and then adding it back
+            list(REMOVE_ITEM outDeps "pu")
+            list(APPEND outDeps ${PUNAME} "fnt" "ssg" "sg")
+        elseif (${c} STREQUAL "puaux")
+            list(APPEND outDeps ${PUNAME} "fnt" "ssg" "sg")
+        elseif (${c} STREQUAL "ssg")
+            list(APPEND outDeps "sg")
+        endif()
+    endforeach()
+        
+    list(APPEND outDeps "ul") # everything needs ul
+    list(REMOVE_DUPLICATES outDeps) # clean up
+
+    
+
+    # look for traditional static libraries
+    foreach(component ${outDeps})
+        find_static_component(${component} PLIB_LIBRARIES)
+    endforeach()
+endif()
+
+list(FIND outDeps "js" haveJs)
+if(${haveJs} GREATER -1)
+    message(STATUS "adding runtime JS dependencies")
+    if(APPLE)
+    # resolve frameworks to full paths
+        find_library(IOKIT_LIBRARY IOKit)
+        find_library(CF_LIBRARY CoreFoundation)
+        set(JS_LIBS ${IOKIT_LIBRARY} ${CF_LIBRARY})
+    elseif(WIN32)
+        set(WINMM_LIBRARY winmm)
+        set(JS_LIBS ${WINMM_LIBRARY})
+    elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+        # anything needed here?
+    elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+        find_library(USBHID_LIBRARY usbhid)
+        # check_function_exists(hidinit)
+        set(JS_LIBS ${USBHID_LIBRARY})
+    else()
+        message(WARNING "Unsupported platform for PLIB JS libs")
+    endif()
+    
+    list(APPEND PLIB_LIBRARIES ${JS_LIBS})
+endif()
+
+include(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(PLIB DEFAULT_MSG PLIB_LIBRARIES PLIB_INCLUDE_DIR)
+
