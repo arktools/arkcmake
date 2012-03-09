@@ -22,13 +22,13 @@ find_library(_ARKMATH_LIBRARY
 
 # find the data directory
 find_path(ARKMATH_DATADIR
-	NAMES arkmath/VERSION
+	NAMES arkmath/data/WMM.COF
     PATH_SUFFIXES share
     )
 
 # read the version
-if (EXISTS ${ARKMATH_DATADIR}/VERSION)
-    file(READ ${ARKMATH_DATADIR}/VERSION ARKMATH_VERSION)
+if (EXISTS ${_ARKMATH_INCLUDE_DIR}/VERSION)
+    file(READ ${_ARKMATH_INCLUDE_DIR}/VERSION ARKMATH_VERSION)
 endif()
 
 # handle arguments

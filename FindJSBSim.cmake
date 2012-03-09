@@ -22,13 +22,13 @@ find_library(_JSBSIM_LIBRARY
 
 # find the data directory
 find_path(JSBSIM_DATADIR
-	NAMES jsbsim/VERSION
+	NAMES jsbsim/aircraft/737/737.xml
     PATH_SUFFIXES share
     )
 
 # read the version
-if (EXISTS ${JSBSIM_DATADIR}/VERSION)
-    file(READ ${JSBSIM_DATADIR}/VERSION JSBSIM_VERSION)
+if (EXISTS ${_JSBSIM_INCLUDE_DIR}/VERSION)
+    file(READ ${_JSBSIM_INCLUDE_DIR}/VERSION JSBSIM_VERSION)
 endif()
 
 # handle arguments

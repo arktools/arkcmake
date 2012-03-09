@@ -22,13 +22,13 @@ find_library(_ARKOSG_LIBRARY
 
 # find the data directory
 find_path(ARKOSG_DATADIR
-	NAMES arkosg/VERSION
+	NAMES arkosg/images/ocean.rgb
     PATH_SUFFIXES share
     )
 
 # read the version
-if (EXISTS ${ARKOSG_DATADIR}/VERSION)
-    file(READ ${ARKOSG_DATADIR}/VERSION ARKOSG_VERSION)
+if (EXISTS ${_ARKOSG_INCLUDE_DIR}/VERSION)
+    file(READ ${_ARKOSG_INCLUDE_DIR}/VERSION ARKOSG_VERSION)
 endif()
 
 # handle arguments
