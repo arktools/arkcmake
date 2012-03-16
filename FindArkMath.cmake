@@ -27,8 +27,11 @@ find_path(ARKMATH_DATADIR
     )
 
 # read the version
-if (EXISTS ${_ARKMATH_INCLUDE_DIR}/VERSION)
-    file(READ ${_ARKMATH_INCLUDE_DIR}/VERSION ARKMATH_VERSION)
+if (EXISTS ${_ARKMATH_INCLUDE_DIR}/arkmath/config.h)
+    file(READ ${_ARKMATH_INCLUDE_DIR}/arkmath/config.h ARKMATH_CONFIG_FILE)
+    string(REGEX MATCH "#define ARKMATH_VERSION[ ]+\"([0-9]\\.[0-9]\\.[0-9])\""
+        ARKMATH_VERSION_MATCH ${ARKMATH_CONFIG_FILE})
+    set(ARKMATH_VERSION ${CMAKE_MATCH_1})
 endif()
 
 # handle arguments
