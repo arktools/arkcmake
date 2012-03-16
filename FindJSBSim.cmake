@@ -40,7 +40,6 @@ if (EXISTS ${_JSBSIM_INCLUDE_DIR}/jsbsim/config.h)
     string(REGEX MATCH "#define JSBSIM_VERSION[ ]+\"(([0-9]+\\.)+[0-9]+)\""
         JSBSIM_VERSION_MATCH ${_JSBSIM_CONFIG_FILE})
     set(JSBSIM_VERSION ${CMAKE_MATCH_1})
-    message(STATUS "jsbsim version: ${JSBSIM_VERSION}")
 endif()
 
 # handle arguments
