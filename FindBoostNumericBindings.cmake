@@ -8,9 +8,15 @@
 # macros
 include(FindPackageHandleStandardArgs)
 
+set(_BOOSTNUMERICBINDINGS_EXTRA_SEARCH_PATHS
+    /usr/local
+    /opt/local
+    )
+
 # find the include directory
 find_path(_BOOSTNUMERICBINDINGS_INCLUDE_DIR
     NAMES boost/numeric/bindings/lapack/lapack.h
+    PATHS ${_BOOSTNUMERICBINDINGS_EXTRA_SEARCH_PATHS}
     )
 
 # handle arguments

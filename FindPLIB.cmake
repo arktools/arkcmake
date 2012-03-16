@@ -42,10 +42,15 @@
 # macros
 include(FindPackageHandleStandardArgs)
 
+set(_PLIB_EXTRA_SEARCH_PATHS
+    /usr/local
+    /opt/local
+    )
+
 # find the include directory
 find_path(_PLIB_INCLUDE_DIR
 	NAMES plib/ul.h
-    PATHS /usr/local
+    PATHS ${_PLIB_EXTRA_SEARCH_PATHS}
     )
 
 # read the version
@@ -70,7 +75,7 @@ foreach(component ${PLIB_FIND_COMPONENTS})
     string(TOLOWER ${component} component_lc) 
     find_library(PLIB_${component_uc}
         NAMES plib${component_lc} libplib${component_lc}.a
-        PATHS /usr/local
+        PATHS ${_PLIB_EXTRA_SEARCH_PATHS}
         )
     list(APPEND PLIB_LIBRARIES ${PLIB_${component_uc}})
 endforeach()
