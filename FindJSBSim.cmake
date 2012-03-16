@@ -19,29 +19,28 @@ set(_JSBSIM_EXTRA_SEARCH_PATHS
 find_path(_JSBSIM_INCLUDE_DIR
 	NAMES jsbsim/initialization/FGTrimmer.h
     PATHS ${_JSBSIM_EXTRA_SEARCH_PATHS}
-    PATH_SUFFIXES include
     )
 
 # find the library
 find_library(_JSBSIM_LIBRARY
 	NAMES jsbsim
     PATHS ${_JSBSIM_EXTRA_SEARCH_PATHS}
-    PATH_SUFFIXES lib
     )
 
 # find the data directory
 find_path(JSBSIM_DATADIR
 	NAMES jsbsim/aircraft/737/737.xml
-    PATHS ${_JSBSIM_EXTRA_SEARCH_PATHS}
     PATH_SUFFIXES share
+    PATHS ${_JSBSIM_EXTRA_SEARCH_PATHS}
     )
 
 # read the version
 if (EXISTS ${_JSBSIM_INCLUDE_DIR}/jsbsim/config.h)
-    file(READ ${_JSBSIM_INCLUDE_DIR}/jsbsim/config.h JSBSIM_CONFIG_FILE)
-    string(REGEX MATCH "#define JSBSIM_VERSION[ ]+\"([0-9]\\.[0-9]\\.[0-9])\""
-        JSBSIM_VERSION_MATCH ${JSBSIM_CONFIG_FILE})
+    file(READ ${_JSBSIM_INCLUDE_DIR}/jsbsim/config.h _JSBSIM_CONFIG_FILE)
+    string(REGEX MATCH "#define JSBSIM_VERSION[ ]+\"(([0-9]+\\.)+[0-9]+)\""
+        JSBSIM_VERSION_MATCH ${_JSBSIM_CONFIG_FILE})
     set(JSBSIM_VERSION ${CMAKE_MATCH_1})
+    message(STATUS "jsbsim version: ${JSBSIM_VERSION}")
 endif()
 
 # handle arguments
