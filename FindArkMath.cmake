@@ -19,19 +19,21 @@ set(_ARKMATH_EXTRA_SEARCH_PATHS
 find_path(_ARKMATH_INCLUDE_DIR
 	NAMES arkmath/storage_adaptors.hpp
     PATHS ${_ARKMATH_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES include
     )
 
 # find the library
 find_library(_ARKMATH_LIBRARY
 	NAMES arkmath
     PATHS ${_ARKMATH_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES lib
     )
 
 # find the data directory
 find_path(ARKMATH_DATADIR
 	NAMES arkmath/data/WMM.COF
-    PATH_SUFFIXES share
     PATHS ${_ARKMATH_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES share
     )
 
 # read the version

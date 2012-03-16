@@ -17,6 +17,7 @@ set(_MAVLINK_EXTRA_SEARCH_PATHS
 find_path(_MAVLINK_INCLUDE_DIR
 	NAMES mavlink/v1.0/mavlink_types.h
     PATHS ${_MAVLINK_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES include
     )
 
 # read the version

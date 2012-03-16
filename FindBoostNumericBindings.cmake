@@ -17,6 +17,7 @@ set(_BOOSTNUMERICBINDINGS_EXTRA_SEARCH_PATHS
 find_path(_BOOSTNUMERICBINDINGS_INCLUDE_DIR
     NAMES boost/numeric/bindings/lapack/lapack.h
     PATHS ${_BOOSTNUMERICBINDINGS_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES include
     )
 
 # handle arguments

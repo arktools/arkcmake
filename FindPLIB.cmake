@@ -51,6 +51,7 @@ set(_PLIB_EXTRA_SEARCH_PATHS
 find_path(_PLIB_INCLUDE_DIR
 	NAMES plib/ul.h
     PATHS ${_PLIB_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES include
     )
 
 # read the version
@@ -76,6 +77,7 @@ foreach(component ${PLIB_FIND_COMPONENTS})
     find_library(PLIB_${component_uc}
         NAMES plib${component_lc} libplib${component_lc}.a
         PATHS ${_PLIB_EXTRA_SEARCH_PATHS}
+        PATH_SUFFIXES lib
         )
     list(APPEND PLIB_LIBRARIES ${PLIB_${component_uc}})
 endforeach()

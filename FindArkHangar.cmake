@@ -16,8 +16,8 @@ set(_ARKHANGAR_EXTRA_SEARCH_PATHS
 # find the data directory
 find_path(ARKHANGAR_DATADIR
 	NAMES arkhangar/config.h
-    PATH_SUFFIXES share
     PATHS ${_ARKHANGAR_EXTRA_SEARCH_PATHS}
+    PATH_SUFFIXES share
     )
 
 # read the version
