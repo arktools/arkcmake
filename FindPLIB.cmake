@@ -64,6 +64,8 @@ if (EXISTS ${_PLIB_INCLUDE_DIR}/ul.h)
     string(REGEX MATCH "^# define PLIB_TINY_VERSION.*([0-9]+)")
     set(_PLIB_TINY_VERSION ${CMAKE_MATCH_0})
     set(PLIB_VERSION "${PLIB_MAJOR_VERSION}.${PLIB_MINOR_VERSION}.${PLIB_TINY_VERSION}")
+else()
+    set(PLIB_VERSION "")
 endif()
 
 # find components
@@ -85,6 +87,6 @@ endforeach()
 # handle arguments
 set(PLIB_INCLUDE_DIRS ${_PLIB_INCLUDE_DIR})
 find_package_handle_standard_args(PLIB
-    REQUIRED_VARS PLIB_LIBRARIES PLIB_INCLUDE_DIRS
-    #VERSION_VAR PLIB_VERSION
+    REQUIRED_VARS PLIB_LIBRARIES PLIB_INCLUDE_DIRS PLIB_VERSION
+    VERSION_VAR PLIB_VERSION
     )

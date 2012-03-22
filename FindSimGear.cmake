@@ -60,6 +60,8 @@ if (EXISTS ${_SIMGEAR_INCLUDE_DIR}/simgear/version.h)
     string(REGEX MATCH "#define SIMGEAR_VERSION[ ]+(([0-9]+\\.)+[0-9]+)"
         _SIMGEAR_VERSION_MATCH ${SIMGEAR_VERSION_FILE})
     set(SIMGEAR_VERSION ${CMAKE_MATCH_1})
+else()
+    set(SIMGEAR_VERSION "")
 endif()
 
 # find components
@@ -81,6 +83,6 @@ endforeach()
 # handle arguments
 set(SIMGEAR_INCLUDE_DIRS ${_SIMGEAR_INCLUDE_DIR})
 find_package_handle_standard_args(SimGear
-    REQUIRED_VARS SIMGEAR_LIBRARIES SIMGEAR_INCLUDE_DIRS
+    REQUIRED_VARS SIMGEAR_LIBRARIES SIMGEAR_INCLUDE_DIRS SIMGEAR_VERSION
     VERSION_VAR SIMGEAR_VERSION
     )
