@@ -9,35 +9,6 @@
 # when listing components, list in the order below
 # to ensure proper static linking
 #
-# core compoennts:
-#        comps
-#        environment
-#        nasal
-#        tsync
-#        bucket
-#        route
-#        io
-#        serial
-#        math
-#        props
-#        structure
-#        timing
-#        xml
-#        misc
-#        threads
-#        debug
-#        magvar
-#
-# scene components:
-#        ephem
-#        sky
-#        material
-#        tgdb
-#        model
-#        screen
-#        bvh
-#        util
-#        sound
 
 # macros
 include(FindPackageHandleStandardArgs)
@@ -55,15 +26,15 @@ find_path(_PLIB_INCLUDE_DIR
     )
 
 # read the version
-if (EXISTS ${_PLIB_INCLUDE_DIR}/ul.h)
-    file(READ ${_PLIB_DATADIR}/ul.h PLIB_VERSION_FILE)
-    string(REGEX MATCH "^# define PLIB_MAJOR_VERSION.*([0-9]+)")
-    set(_PLIB_MAJOR_VERSION ${CMAKE_MATCH_0})
-    string(REGEX MATCH "^# define PLIB_MINOR_VERSION.*([0-9]+)")
-    set(_PLIB_MINOR_VERSION ${CMAKE_MATCH_0})
-    string(REGEX MATCH "^# define PLIB_TINY_VERSION.*([0-9]+)")
-    set(_PLIB_TINY_VERSION ${CMAKE_MATCH_0})
-    set(PLIB_VERSION "${PLIB_MAJOR_VERSION}.${PLIB_MINOR_VERSION}.${PLIB_TINY_VERSION}")
+if (EXISTS ${_PLIB_INCLUDE_DIR}/plib/ul.h)
+    file(READ ${_PLIB_INCLUDE_DIR}/plib/ul.h PLIB_VERSION_FILE)
+    string(REGEX MATCH "\#define PLIB_MAJOR_VERSION ([0-9]+)" _PLIB_VERSION_MATCH ${PLIB_VERSION_FILE})
+    set(_PLIB_MAJOR_VERSION ${CMAKE_MATCH_1})
+    string(REGEX MATCH "\#define PLIB_MINOR_VERSION[ ]+([0-9]+)" _PLIB_VERSION_MATCH ${PLIB_VERSION_FILE})
+    set(_PLIB_MINOR_VERSION ${CMAKE_MATCH_1})
+    string(REGEX MATCH "\#define PLIB_TINY_VERSION[ ]+([0-9]+)" _PLIB_VERSION_MATCH ${PLIB_VERSION_FILE})
+    set(_PLIB_TINY_VERSION ${CMAKE_MATCH_1})
+    set(PLIB_VERSION "${_PLIB_MAJOR_VERSION}.${_PLIB_MINOR_VERSION}.${_PLIB_TINY_VERSION}")
 else()
     set(PLIB_VERSION "")
 endif()
